@@ -3,9 +3,9 @@ body
 	background-color: lightskyblue;
 	margin-left: 25px;
 }
-h1 
+h1
 {
-	color: #0000ff; 
+	color: #0000ff;
 }
 table
 {
@@ -39,7 +39,7 @@ font-size: 20px;
 }
 .post
 {
-	
+
 	background-color: lightgrey;
 	width: 500px;
 	border: 5px solid red;
@@ -81,7 +81,6 @@ font-size: 20px;
 	text-align: right;
 	width: 49%;
 }
-
 h5
 {
 	image-align: right;
@@ -96,4 +95,15 @@ h5
 	display: inline-block;
 	width: 49%;
 	vertical-align: middle;
+}
+span.validation-message
+{
+    display: block;
+    color: red;
+}
+
+.error input
+{
+    box-shadow: 0 0 17px 3px purple;
+    margin: 0.3em 0;
 }

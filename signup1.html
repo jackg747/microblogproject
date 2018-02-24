@@ -3,6 +3,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Sign-Up for AvGeek News Here!</title>
+<script src="validation.js"></script>
+<script src="jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="presentation.css" />
 </head>
 <body>
@@ -11,7 +13,7 @@
 			width="200" height="150" /> Sign Up Page
 	</h1>
 
-	<form id="sign-up" onsubmit="return SignUpForm()" method="post">
+	<form id="sign-up" onsubmit="return validateSignUpForm()" method="post">
 		<table>
 			<tr>
 				<td>Firstname:</td>
@@ -46,7 +48,7 @@
 				<td><input type="password" name="pswd" size="31" /></td>
 			<tr>
 				<td>Confirm Password:</td>
-				<td><input type="password" name="pswdr" size="31" /></td>
+				<td><input type="password" name="confirm_pswd" size="31" /></td>
 			</tr>
 		</table>
 		<h3>

@@ -10,12 +10,10 @@
 		<img src="avgeek.png" alt="Aviation GeekS!" style="display: inline"
 			width="200" height="150" /> Post Here
 	</h1>
-	<form id="post" onsubmit="return PostForm()" method="post">
-		<textarea></textarea>
-		<h3>
-			<input type="submit" name="Post" value="Post" /> <input type="reset"
-				name="Reset" value="Reset" />
-		</h3>
+	<form id="post" onsubmit="return validatePostForm()" method="post">
+		<textarea name = "postContent"></textarea>
+		<input type="submit" name="Post" value="Post" />
+		<input type="reset"	name="Reset" value="Reset" />
 	</form>
 </body>
 </html>

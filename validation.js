@@ -91,3 +91,19 @@ function validateSignUpForm(){
     }
     return submit;
 }
+function validatePostForm(){
+    var submit = true;
+    var $postContent = $('[name=postContent]');
+    //store trimmed value of postContent
+    var contentText = $postContent.val().trim();
+
+
+    if (contentText.length == 0){
+        display_error("Your post must not be empty.", $postContent)
+        submit = false;
+    } else if (contentText.length > 250) {
+        display_error("Your post must not exceed 250 characters.", $postContent)
+        submit = false;
+    }
+    return submit;
+}

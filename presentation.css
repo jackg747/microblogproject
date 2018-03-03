@@ -101,7 +101,6 @@ span.validation-message
     display: block;
     color: red;
 }
-
 .error input
 {
     box-shadow: 0 0 17px 3px purple;

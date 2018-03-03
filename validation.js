@@ -2,7 +2,6 @@ function display_error(message, $element){
     var messageElem = '<span class="validation-message">' + message + '</span>';
 
     var $fieldRow = $element.closest("tr")
-
     $fieldRow.addClass("error");
     var $existingMessage = $fieldRow.find('.validation-message');
     if ($existingMessage.length) {
@@ -11,8 +10,6 @@ function display_error(message, $element){
         $element.before(messageElem);
     }
 }
-
-
 
 function validate_email(email) {
     var email_regex = /\S+@\S+\.\S+/;
@@ -50,11 +47,11 @@ function validate_username(username) {
 }
 function validateLogInForm(){
     var submit = true;
-    var $username = $('[name=uname]');
+    var $email = $('[name=email]');
     var $password = $('[name=pswd]');
 
-    if (validate_username($username.val()) == false){
-        display_error("Username cannot contain spaces or special characters.", $username);
+    if (validate_email($email.val()) == false){
+        display_error("Email provided is invalid.", $email);
         submit = false;
     }
     if (validate_password($password.val()) == false){
@@ -65,8 +62,6 @@ function validateLogInForm(){
 }
 
 function validateSignUpForm(){
-
-
     var submit = true;
     var $username = $('[name=uname]');
     var $password = $('[name=pswd]');

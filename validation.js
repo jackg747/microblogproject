@@ -1,13 +1,29 @@
 function display_error(message, $element){
     var messageElem = '<span class="validation-message">' + message + '</span>';
-
-    var $fieldRow = $element.closest("tr")
+//finds closest fieldparent class
+    var $fieldRow = $element.closest(".fieldparent")
+    //adds error class for css file
     $fieldRow.addClass("error");
+    //check for validation message
     var $existingMessage = $fieldRow.find('.validation-message');
+//if existing message, update message provided
     if ($existingMessage.length) {
         $existingMessage.text(message);
+        //if there isnt one, insert a new one
     } else {
         $element.before(messageElem);
+    }
+}
+function hide_error($element){
+    var $fieldRow = $element.closest(".fieldparent")
+    //removes error class for css file
+    $fieldRow.removeClass("error");
+    //check for validation message
+    var $existingMessage = $fieldRow.find('.validation-message');
+//if existing message, update message provided
+    if ($existingMessage.length) {
+        $existingMessage.remove();
+        //if there isnt one, insert a new one
     }
 }
 
@@ -53,10 +69,14 @@ function validateLogInForm(){
     if (validate_email($email.val()) == false){
         display_error("Email provided is invalid.", $email);
         submit = false;
+    } else{
+        hide_error($email);
     }
     if (validate_password($password.val()) == false){
         display_error("Password must be at least 8 characters long and have at least 1 number or symbol.", $password);
         submit = false;
+    }else{
+        hide_error($password);
     }
     return submit;
 }
@@ -72,22 +92,33 @@ function validateSignUpForm(){
     if (validate_username($username.val()) == false){
         display_error("Username cannot contain spaces or special characters.", $username);
         submit = false;
+    } else{
+        hide_error($username);
     }
     if (validate_password($password.val()) == false){
         display_error("Password must be at least 8 characters long and have at least 1 number or symbol.", $password);
         submit = false;
+    } else{
+        hide_error($password);
     }
+
     if ($password.val() != $confirm_pswd.val()){
         display_error("Passwords must match", $confirm_pswd);
         submit = false;
+    } else{
+        hide_error($confirm_pswd);
     }
     if (validate_dateofbirth($dob.val()) == false){
         display_error("Date of birth must follow DD/MM/YYYY.", $dob);
         submit = false;
+    } else{
+        hide_error($dob);
     }
     if (validate_email($email.val()) == false){
         display_error("Email provided is invalid.", $email);
         submit = false;
+    } else{
+        hide_error($email);
     }
     return submit;
 }
@@ -104,6 +135,8 @@ function validatePostForm(){
     } else if (contentText.length > 250) {
         display_error("Your post must not exceed 250 characters.", $postContent)
         submit = false;
+    } else {
+        hide_error($postContent);
     }
     return submit;
 }

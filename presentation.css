@@ -101,8 +101,18 @@ span.validation-message
     display: block;
     color: red;
 }
-.error input
+.error input,
+.error textarea
 {
     box-shadow: 0 0 17px 3px purple;
     margin: 0.3em 0;
+}
+.exceeded
+{
+	color: red;
+}
+.clicked
+{
+	color: lime;
+	background-color: purple !important;
 }

@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.17-0ubuntu0.16.04.1)
 # Database: jackmicroblogproject
-# Generation Time: 2018-03-29 20:07:55 +0000
+# Generation Time: 2018-03-29 22:42:17 +0000
 # ************************************************************
 
 
@@ -58,14 +58,14 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(191) DEFAULT NULL,
-  `username` varchar(191) DEFAULT NULL,
-  `password` varchar(191) DEFAULT NULL,
-  `first_name` varchar(191) DEFAULT NULL,
-  `last_name` varchar(191) DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
-  `plane_owned` varchar(191) DEFAULT NULL,
-  `profile_photo` varchar(191) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `plane_owned` varchar(255) DEFAULT NULL,
+  `profile_photo` varchar(255) DEFAULT NULL,
+  `date_of_birth` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

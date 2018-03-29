@@ -35,7 +35,7 @@ function get_single_record($query)
     }
 }
 
-function insert_single_record($table, $data, $allowedColumns = [])
+function insert_single_record($table, $data, $allowedColumns = array())
 {
     if (!empty($allowedColumns)) {
         foreach ($data as $key => $value) {
@@ -63,9 +63,7 @@ function get_user_by_email($email)
 {
     $user = get_single_record("SELECT * FROM users WHERE email = '$email'");
 
-    if (!empty($user[0])) {
-        $user = $user[0];
-    } else {
+    if (empty($user)) {
         $user = false;
     }
 
@@ -106,24 +104,24 @@ function authenticate($email, $password)
 function create_user($data)
 {
     // Validate provided data
-    if (!validate_username($data['username'])) {
+    if (!validate_username(@$data['username'])) {
         display_error("Username cannot contain spaces or special characters.");
     }
-    if (!validate_password($data['password'])) {
+    if (!validate_password(@$data['password'])) {
         display_error("Password must be at least 8 characters long and have at least 1 number or symbol.");
     }
-    if ($data['password'] !== $data['confirm_password']) {
+    if (@$data['password'] !== @$data['confirm_password']) {
         display_error("Passwords must match");
     }
-    if (!validate_dateofbirth($data['date_of_birth'])) {
+    if (!validate_dateofbirth(@$data['date_of_birth'])) {
         display_error("Date of birth must follow DD/MM/YYYY.");
     }
-    if (!validate_email($data['email'])) {
+    if (!validate_email(@$data['email'])) {
         display_error("Email provided is invalid.");
     }
 
     // Check to see if the user already exists
-    $user = get_user_by_email($data['email']);
+    $user = get_user_by_email(@$data['email']);
     if ($user) {
         display_error("{$data['email']} already has an account");
     }
@@ -131,8 +129,14 @@ function create_user($data)
     // Hash the password for securely storing it in the DB
     $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
+    $picturePath = store_uploaded_files($_FILES['img'], array('jpg', 'jpeg', 'gif', 'png')) ?: array();
+
+    if (!empty($picturePath)) {
+        $data['profile_photo'] = 'uploads/' . basename($picturePath[0]);
+    }
+
     // Insert the user's data
-    $success = insert_single_record('users', $data, [
+    $success = insert_single_record('users', $data, array(
         'first_name',
         'last_name',
         'email',
@@ -140,10 +144,85 @@ function create_user($data)
         'password',
         'date_of_birth',
         'plane_owned',
-    ]);
+        'profile_photo',
+    ));
 
     header('Location: login.php');
 
     // Auto login the user
     // $_SESSION['user_email'] = $data['email']
+}
+
+
+
+
+
+
+
+
+
+// Store uploaded files
+function store_uploaded_files($uploaded_files, $allowed_extensions = array()) {
+    $final_file_paths = array();
+
+    if (!is_array($uploaded_files['name'])) {
+        $uploaded_files['name'] = array($uploaded_files['name']);
+        $uploaded_files['tmp_name'] = array($uploaded_files['tmp_name']);
+    }
+
+    // Loop through the provided files
+    for ($i = 0; $i < count($uploaded_files['name']); $i++) {
+        // Get the temporary file path
+        $tmp_file_path = $uploaded_files['tmp_name'][$i];
+
+        // Verify that we want to continue processing this file
+        if (!empty($tmp_file_path)) {
+            // Get the path that the file should be uploaded to
+            $upload_file_path = get_upload_path(pathinfo($uploaded_files['name'][$i], PATHINFO_BASENAME));
+
+            // Filter through provided files based on allowed extensions if any were provided
+            if (!empty($allowed_extensions)) {
+                // Verify that the file passes the extensions check
+                if (!empty($tmp_file_path)) {
+                    if (in_array(pathinfo($upload_file_path, PATHINFO_EXTENSION), $allowed_extensions)) {
+                        if (move_uploaded_file($tmp_file_path, $upload_file_path)) {
+                            $final_file_paths[] = $upload_file_path;
+                        }
+                    }
+                }
+            } else {
+                // Store the file regardless of extension
+                if (move_uploaded_file($tmp_file_path, $upload_file_path)) {
+                    $final_file_paths[] = $upload_file_path;
+                }
+            }
+        }
+    }
+
+    if (!empty($final_file_paths)) {
+        return $final_file_paths;
+    } else {
+        return false;
+    }
+}
+
+// Build the upload path
+function get_upload_path($filename) {
+    global $config;
+
+    $upload_dir = __DIR__ . '/uploads/';
+
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+    $upload_path = $upload_dir . $filename;
+
+    // Try to make the filename unique
+    $i = 0;
+    while (file_exists($upload_path) && $i < 5) {
+        $i++;
+        $upload_path = $upload_dir . pathinfo($upload_path, PATHINFO_FILENAME) . '-' . $i . '.' . pathinfo($upload_path, PATHINFO_EXTENSION);
+    }
+
+    return $upload_path;
 }

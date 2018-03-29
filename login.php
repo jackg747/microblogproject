@@ -31,7 +31,7 @@
             </h3>
         </form>
         <p>
-            <a href="signup1.html">Don't have an account? Sign-up here!</a>
+            <a href="signup1.php">Don't have an account? Sign-up here!</a>
         </p>
     </body>
 </html>

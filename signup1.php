@@ -57,7 +57,7 @@
 		</h3>
 	</form>
 	<p>
-		<a href="login.html">Already have an account? Click Here!</a>
+		<a href="login.php">Already have an account? Click Here!</a>
 	</p>
 </body>
 </html>

@@ -17,19 +17,19 @@
 		<table>
 			<tr class= "fieldparent">
 				<td>Firstname:</td>
-				<td><input type="text" name="firstname" size="31" /></td>
+				<td><input type="text" name="first_name" size="31" /></td>
 			</tr>
 			<tr class= "fieldparent">
 				<td>Lastname:</td>
-				<td><input type="text" name="lastname" size="31" /></td>
+				<td><input type="text" name="last_name" size="31" /></td>
 			</tr>
 			<tr class= "fieldparent">
 				<td>Date of Birth:</td>
-				<td><input type="text" name="dob" size="31" /></td>
+				<td><input type="text" name="date_of_birth" size="31" /></td>
 			</tr>
 			<tr class= "fieldparent">
 				<td>Plane Owned:</td>
-				<td><input type="text" name="planeowned" size="31" /></td>
+				<td><input type="text" name="plane_owned" size="31" /></td>
 			</tr>
 			<tr class= "fieldparent">
 				<td>Email:</td>
@@ -37,7 +37,7 @@
 			</tr>
 			<tr class= "fieldparent">
 				<td>Username:</td>
-				<td><input type="text" name="uname" size="31" /></td>
+				<td><input type="text" name="username" size="31" /></td>
 			</tr>
 			<tr class= "fieldparent">
 				<td>Image:</td>
@@ -45,10 +45,10 @@
 			</tr>
 			<tr class= "fieldparent">
 				<td>Password:</td>
-				<td><input type="password" name="pswd" size="31" /></td>
+				<td><input type="password" name="password" size="31" /></td>
 			<tr class= "fieldparent">
 				<td>Confirm Password:</td>
-				<td><input type="password" name="confirm_pswd" size="31" /></td>
+				<td><input type="password" name="confirm_password" size="31" /></td>
 			</tr>
 		</table>
 		<h3>

@@ -83,10 +83,10 @@ function validateLogInForm(){
 
 function validateSignUpForm(){
     var submit = true;
-    var $username = $('[name=uname]');
-    var $password = $('[name=pswd]');
-    var $confirm_pswd = $('[name=confirm_pswd]');
-    var $dob = $('[name=dob]');
+    var $username = $('[name=username]');
+    var $password = $('[name=password]');
+    var $confirm_pswd = $('[name=confirm_password]');
+    var $dob = $('[name=date_of_birth]');
     var $email = $('[name=email]');
 
     if (validate_username($username.val()) == false){

@@ -22,7 +22,7 @@
                 </tr>
                 <tr class= "fieldparent">
                     <td>Password:</td>
-                    <td><input type="password" name="pswd" size="35" /></td>
+                    <td><input type="password" name="password" size="35" /></td>
                 </tr>
             </table>
             <h3>

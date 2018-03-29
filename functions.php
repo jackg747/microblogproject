@@ -53,7 +53,7 @@ function insert_single_record($table, $data, $allowedColumns = array())
     $result = get_database()->query($query);
 
     if ($error = get_database()->error) {
-        throw new \Exception($error . ' ' . var_export($query, true));
+        throw new Exception($error . ' ' . var_export($query, true));
     }
 
     return $result;
@@ -87,12 +87,12 @@ function authenticate($email, $password)
     // Attempt to retrieve the selected user
     $user = get_user_by_email($email);
     if (!$user) {
-        throw new \Exception("$email does not have a user account");
+        throw new Exception("$email does not have a user account");
     }
 
     // Attempt to verify the provided password against the stored user account
     if (!password_verify($password, $user['password'])) {
-        throw new \Exception("Password incorrect");
+        throw new Exception("Password incorrect");
     }
 
     // Store the user's email in the session

@@ -4,7 +4,7 @@ $message = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         authenticate($_POST['email'], $_POST['password']);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $message = $e->getMessage();
     }
 }

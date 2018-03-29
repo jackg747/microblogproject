@@ -4,7 +4,7 @@ $message = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         create_user($_POST);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $message = $e->getMessage();
     }
 }

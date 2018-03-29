@@ -1,4 +1,9 @@
-<?php session_start(); require_once("common.php"); ?>
+<?php session_start();
+try {
+    require_once("common.php");
+} catch (Exception $e) {
+    $message = $e->getMessage();
+} ?>
 <!DOCTYPE html>
 <html>
     <head>

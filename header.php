@@ -1,4 +1,5 @@
 <?php session_start();
+ini_set('error_reporting', E_ALL);
 try {
     require_once("common.php");
 } catch (Exception $e) {

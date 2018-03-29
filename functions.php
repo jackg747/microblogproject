@@ -1,6 +1,4 @@
 <?php
-require_once("vendor/Medoo.php");
-require_once("validation.php");
 
 $database = null;
 $user = null;
@@ -12,23 +10,58 @@ function get_database()
     if (is_null($database)) {
         $config = parse_ini_file('env.ini');
 
-        $database = new Medoo([
-            'database_type' => 'mysql',
-            'database_name' =>  $config['MYSQL_DB'],
-            'server' => $config['MYSQL_HOST'],
-            'username' => $config['MYSQL_USER'],
-            'password' => $config['MYSQL_PASS'],
-        ]);
+        $database = new mysqli($config['MYSQL_HOST'], $config['MYSQL_USER'], $config['MYSQL_PASS'], $config['MYSQL_DB']);
+
+        // Check connection
+        if ($database->connect_error) {
+            die("Connection failed: " . $database->connect_error);
+        }
     }
 
     return $database;
 }
 
+function get_single_record($query)
+{
+    $result = get_database()->query($query);
+
+    if ($result && $result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            return $row;
+        }
+    } else {
+        return false;
+    }
+}
+
+function insert_single_record($table, $data, $allowedColumns = [])
+{
+    if (!empty($allowedColumns)) {
+        foreach ($data as $key => $value) {
+            if (!in_array($key, $allowedColumns)) {
+                unset($data[$key]);
+            }
+        }
+    }
+
+    $columns = implode(', ', array_keys($data));
+    $values = '"' . implode('","', array_values($data)) . '"';
+
+    $query = "INSERT INTO `$table` ({$columns}) VALUES ({$values});";
+
+    $result = get_database()->query($query);
+
+    if ($error = get_database()->error) {
+        throw new \Exception($error . ' ' . var_export($query, true));
+    }
+
+    return $result;
+}
+
 function get_user_by_email($email)
 {
-    $user = get_database()->select('users', '*', [
-        'email[>]' => $email,
-    ]);
+    $user = get_single_record("SELECT * FROM users WHERE email = '$email'");
 
     if (!empty($user[0])) {
         $user = $user[0];
@@ -41,7 +74,7 @@ function get_user_by_email($email)
 
 function get_user()
 {
-    global $user
+    global $user;
     if (empty($user) && !empty($_SESSION['email'])) {
         $user = get_user_by_email($_SESSION['email']);
     }
@@ -82,7 +115,7 @@ function create_user($data)
     if ($data['password'] !== $data['confirm_password']) {
         display_error("Passwords must match");
     }
-    if (!validate_dateofbirth($data['date_of_birth']) {
+    if (!validate_dateofbirth($data['date_of_birth'])) {
         display_error("Date of birth must follow DD/MM/YYYY.");
     }
     if (!validate_email($data['email'])) {
@@ -92,14 +125,24 @@ function create_user($data)
     // Check to see if the user already exists
     $user = get_user_by_email($data['email']);
     if ($user) {
-        throw new \Exception("{$data['email']} already has an account");
+        display_error("{$data['email']} already has an account");
     }
 
     // Hash the password for securely storing it in the DB
-    $data['password'] = password_hash($data['password']);
+    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
     // Insert the user's data
-    get_database()->insert('users', $data);
+    $success = insert_single_record('users', $data, [
+        'first_name',
+        'last_name',
+        'email',
+        'username',
+        'password',
+        'date_of_birth',
+        'plane_owned',
+    ]);
+
+    header('Location: login.php');
 
     // Auto login the user
     // $_SESSION['user_email'] = $data['email']

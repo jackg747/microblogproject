@@ -1,3 +1,14 @@
+<?php require_once("common.php");
+
+$message = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        create_user($_POST);
+    } catch (\Exception $e) {
+        $message = $e->getMessage();
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +23,10 @@
 		<img src="avgeek.png" alt="Aviation GeekS!" style="display: inline"
 			width="200" height="150" /> Sign Up Page
 	</h1>
+
+    <?php if ($message) { ?>
+        <div style="padding: 1em; color: white; background: red;"><?php echo $message; ?></div>
+    <?php } ?>
 
 	<form id="sign-up" onsubmit="return validateSignUpForm()" method="post">
 		<table>

@@ -4,10 +4,11 @@ jQuery(document).ready(function ($){
     $likeButton.on('click', function(e){
         var $this = $(this);
         $this.toggleClass('clicked');
+        $dislikeButton.removeClass('clicked');
     });
     $dislikeButton.on('click', function(e){
         var $this = $(this);
         $this.toggleClass('clicked');
+        $likeButton.removeClass('clicked');
     });
-
 });

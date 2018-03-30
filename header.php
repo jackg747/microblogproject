@@ -18,7 +18,8 @@ try {
         <?php if ($user = get_user()) { ?>
             <script src="reactions.js"></script>
             <span style="background: black; color: white; display: block; float: right; padding: 1em">
-                Welcome <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
+                Welcome <?php echo $user['first_name'] . ' ' . $user['last_name']; ?><br>
+                <a href="profile.php?user=<?php echo $user['username']; ?>">View profile</a>
             </span>
         <?php } else { ?>
             <header>

@@ -180,10 +180,10 @@ function get_user_by_username($username)
     return $user;
 }
 
-function get_user()
+function get_user($force = false)
 {
     global $user;
-    if (empty($user) && !empty($_SESSION['user_email'])) {
+    if ($force || (empty($user) && !empty($_SESSION['user_email']))) {
         $user = get_user_by_email($_SESSION['user_email']);
     }
 

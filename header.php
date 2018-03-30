@@ -15,7 +15,7 @@ try {
         <link rel="stylesheet" type="text/css" href="presentation.css" />
     </head>
     <body>
-        <?php if ($loggedInUser = get_user()) { ?>
+        <?php if ($loggedInUser = get_user(true)) { ?>
             <script src="reactions.js"></script>
             <span style="background: black; color: white; display: block; float: right; padding: 1em">
                 Welcome <?php echo get_user_displayname($loggedInUser); ?><br>

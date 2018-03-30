@@ -11,11 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <?php require_once("header.php"); ?>
 
-<h1>
-	<img src="avgeek.png" alt="Aviation GeekS!" style="display: inline"
-		width="200" height="150" /> Sign Up Page
-</h1>
-
 <form id="sign-up" onsubmit="return validateSignUpForm()" method="post" enctype="multipart/form-data">
 	<table>
 		<tr class= "fieldparent">

@@ -120,12 +120,25 @@ function get_post_by_id($id)
     return $post;
 }
 
+function get_all_posts()
+{
+    $postIds = get_multiple_records("SELECT id from posts ORDER BY created_at DESC");
+
+    if (!empty($postIds)) {
+        foreach ($postIds as $id) {
+            $posts[] = get_post_by_id($id['id']);
+        }
+    }
+
+    return $posts;
+}
+
 function get_users_posts($user)
 {
     $id = (int) $user['id'];
 
     $posts = array();
-    $postIds = get_multiple_records("SELECT id FROM posts where user_id = $id");
+    $postIds = get_multiple_records("SELECT id FROM posts where user_id = $id ORDER BY `created_at` DESC");
 
     if (!empty($postIds)) {
         foreach ($postIds as $id) {
@@ -378,7 +391,7 @@ function display_post($post, $hideActions = false)
         <div class="postaction">
             <?php if (!$hideActions) { ?>
                 <div class="repostcontainer">
-                    <a class="repostbutton" href="javascript:;"> Repost</a>
+                    <a class="repostbutton" href="newpost.php?repost=<?php echo $post['id']; ?>"> Repost</a>
                 </div>
 
                 <div class="counter">

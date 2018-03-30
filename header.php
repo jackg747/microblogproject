@@ -31,5 +31,5 @@ try {
         <?php } ?>
         <h1>
             <img src="avgeek.png" alt="Aviation GeekS!" style="display: inline"
-                width="200" height="150" /> Post Here
+                width="200" height="150" />
         </h1>

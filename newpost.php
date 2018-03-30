@@ -13,7 +13,7 @@ $message = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         create_post($_POST['postContent'], @$repost['id']);
-        header('Location: posts.php');
+        header('Location: index.php');
     } catch (Exception $e) {
         $message = $e->getMessage();
     }

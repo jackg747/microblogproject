@@ -84,6 +84,20 @@ function create_post($content, $parent_id = false)
     insert_single_record('posts', $postData);
 }
 
+function update_reaction($reactionId, $value)
+{
+    $value = (int) $value;
+    $query = "UPDATE `reactions` SET value = $value WHERE id = $reactionId;";
+
+    $result = get_database()->query($query);
+
+    if ($error = get_database()->error) {
+        throw new Exception($error . ' ' . var_export($query, true));
+    }
+
+    return $result;
+}
+
 function insert_single_record($table, $data, $allowedColumns = array())
 {
     if (!empty($allowedColumns)) {
@@ -120,9 +134,14 @@ function get_post_by_id($id)
     return $post;
 }
 
-function get_all_posts()
+function get_all_posts($limit = 0)
 {
-    $postIds = get_multiple_records("SELECT id from posts ORDER BY created_at DESC");
+    $query = "SELECT id from posts ORDER BY created_at DESC";
+    if ($limit) {
+        $query .= " LIMIT $limit";
+    }
+
+    $postIds = get_multiple_records($query);
 
     if (!empty($postIds)) {
         foreach ($postIds as $id) {
@@ -409,10 +428,26 @@ function display_post_content($post, $hideActions)
             </div>
 
             <div class="counter">
-                <a class="likebutton" href="javascript:;"> +1 (0)</a>
-                <a class="dislikebutton" href="javascript:;"> -1 (0)</a>
+                <a class="likebutton <?php get_reaction_class($post['id'], 1); ?>" href="javascript:;" data-post-id=<?php echo $post['id']; ?>> +1 (<span class="reaction-counter"><?php echo get_post_reactions($post['id'], 1); ?></span>)</a>
+                <a class="dislikebutton <?php get_reaction_class($post['id'], -1); ?>" href="javascript:;"  data-post-id=<?php echo $post['id']; ?>> -1 (<span class="reaction-counter"><?php echo get_post_reactions($post['id'], -1); ?></span>)</a>
             </div>
         <?php } ?>
     </div>
     <?php
+}
+
+function get_reaction_class($postId, $value)
+{
+    $user = get_user();
+    $reaction = get_single_record("SELECT id FROM `reactions` WHERE post_id = $postId AND user_id = {$user['id']} AND value = $value");
+    if (!empty($reaction)) {
+        echo 'clicked';
+    }
+}
+
+function get_post_reactions($postId, $value)
+{
+    $postId = (int) $postId;
+    $reactions = get_single_record("SELECT COUNT(*) as numOfReactions FROM `reactions` WHERE post_id = $postId AND value = $value");
+    return @$reactions['numOfReactions'];
 }

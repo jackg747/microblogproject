@@ -9,7 +9,7 @@
 
     <h4>Posts</h4>
     <?php
-        $posts = get_all_posts();
+        $posts = get_all_posts(20);
         if (!empty($posts)) {
             foreach ($posts as $post) {
                 display_post($post);

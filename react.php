@@ -23,6 +23,10 @@ switch ($action) {
 
 $reaction = get_single_record("SELECT * FROM reactions WHERE user_id = {$user['id']} AND post_id = $postId");
 if ($reaction) {
+    if ($reaction['value'] === (string) $value) {
+        $value = 0;
+    }
+
     update_reaction($reaction['id'], $value);
 } else {
     insert_single_record('reactions', array(

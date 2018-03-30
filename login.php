@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if (get_user()) {
-    header('Location: posts.php');
+    header('Location: index.php');
 }
 ?>
 <?php require_once("header.php"); ?>

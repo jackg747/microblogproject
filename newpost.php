@@ -1,7 +1,7 @@
 <?php require_once("common.php");
 
 if (!get_user()) {
-    header('Location: login.php');
+    header('Location: index.php');
 }
 
 $repost = false;

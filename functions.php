@@ -375,31 +375,44 @@ function display_post($post, $hideActions = false)
         <?php if (!empty($repost)) { ?>
             <div class="repost">
                 <span>
-                    <?php echo get_user_displayname($post['user']); ?>
-                    reposted from <?php echo get_user_link($post['user']); ?>
+                    <?php echo get_user_link($post['user']); ?>
+                    reposted from <?php echo get_user_link($repost['user']); ?>
                 </span>
             </div>
         <?php } ?>
 
-        <div class="userinfo">
-            <img class="userpostprofile" src="<?php echo get_user_profile_img($post['user']); ?>" alt="<?php echo get_user_displayname($post['user']); ?>" />
-            <span class="postmeta"><?php echo get_user_link($post['user']); ?> - <?php echo date('H:i - F jS, Y', strtotime($post['created_at'])); ?></span>
-        </div>
-        <div class="text">
-            <p><?php echo htmlspecialchars($post['content']); ?></p>
-        </div>
-        <div class="postaction">
-            <?php if (!$hideActions) { ?>
-                <div class="repostcontainer">
-                    <a class="repostbutton" href="newpost.php?repost=<?php echo $post['id']; ?>"> Repost</a>
-                </div>
+        <?php display_post_content($post, $hideActions); ?>
 
-                <div class="counter">
-                    <a class="likebutton" href="javascript:;"> +1 (0)</a>
-                    <a class="dislikebutton" href="javascript:;"> -1 (0)</a>
-                </div>
-            <?php } ?>
-        </div>
+        <?php if (!empty($repost)) { ?>
+            <div style="margin-left:1em;margin-top:1em;background:#aaa;padding:2em;">
+                <?php display_post_content($repost, $hideActions); ?>
+            </div>
+        <?php } ?>
+    </div>
+    <?php
+}
+
+function display_post_content($post, $hideActions)
+{
+    ?>
+    <div class="userinfo">
+        <img class="userpostprofile" src="<?php echo get_user_profile_img($post['user']); ?>" alt="<?php echo get_user_displayname($post['user']); ?>" />
+        <span class="postmeta"><?php echo get_user_link($post['user']); ?> - <?php echo date('H:i - F jS, Y', strtotime($post['created_at'])); ?></span>
+    </div>
+    <div class="text">
+        <p><?php echo htmlspecialchars($post['content']); ?></p>
+    </div>
+    <div class="postaction">
+        <?php if (!$hideActions) { ?>
+            <div class="repostcontainer">
+                <a class="repostbutton" href="newpost.php?repost=<?php echo $post['id']; ?>"> Repost</a>
+            </div>
+
+            <div class="counter">
+                <a class="likebutton" href="javascript:;"> +1 (0)</a>
+                <a class="dislikebutton" href="javascript:;"> -1 (0)</a>
+            </div>
+        <?php } ?>
     </div>
     <?php
 }

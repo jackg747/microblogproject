@@ -7,6 +7,8 @@
             foreach ($posts as $post) {
                 display_post($post);
             }
+        } else {
+            echo 'No posts to display';
         }
     ?>
 <?php require_once("footer.php"); ?>

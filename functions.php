@@ -30,9 +30,58 @@ function get_single_record($query)
         while($row = $result->fetch_assoc()) {
             return $row;
         }
-    } else {
-        return false;
     }
+
+    if ($error = get_database()->error) {
+        throw new Exception($error . ' ' . var_export($query, true));
+    }
+}
+
+function get_multiple_records($query)
+{
+    $result = get_database()->query($query);
+
+    $records = array();
+    if ($result && $result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $records[] = $row;
+        }
+    }
+
+    if ($error = get_database()->error) {
+        throw new Exception($error . ' ' . var_export($query, true));
+    }
+
+    return $records;
+}
+
+function create_post($content, $parent_id = false)
+{
+    // Get the user
+    $user = get_user();
+
+    // Validate post content
+    $content = trim($content);
+    if (empty($content)) {
+        display_error("Your post must not be empty.");
+    }
+    if (strlen($content) > 250) {
+        display_error("Your post must not exceed 250 characters.");
+    }
+
+    // Build the post data to insert
+    $postData = array(
+        'user_id'    => $user['id'],
+        'content'    => $content,
+        'created_at' => date("Y-m-d H:i:s"),
+    );
+    if (!empty($parent_id)) {
+        $postData['parent_id'] = $parent_id;
+    }
+
+    // Insert the post
+    insert_single_record('posts', $postData);
 }
 
 function insert_single_record($table, $data, $allowedColumns = array())
@@ -59,6 +108,43 @@ function insert_single_record($table, $data, $allowedColumns = array())
     return $result;
 }
 
+function get_post_by_id($id)
+{
+    $id = (int) $id;
+
+    $post = get_single_record("SELECT * FROM posts WHERE id = $id");
+    if ($post) {
+        $post['user'] = get_user_by_id($post['user_id']);
+    }
+
+    return $post;
+}
+
+function get_users_posts($user)
+{
+    $id = (int) $user['id'];
+
+    $posts = array();
+    $postIds = get_multiple_records("SELECT id FROM posts where user_id = $id");
+
+    if (!empty($postIds)) {
+        foreach ($postIds as $id) {
+            $posts[] = get_post_by_id($id['id']);
+        }
+    }
+
+    return $posts;
+}
+
+function get_user_by_id($id)
+{
+    $id = (int) $id;
+
+    $user = get_single_record("SELECT * FROM users WHERE id = $id");
+
+    return $user;
+}
+
 function get_user_by_email($email)
 {
     $user = get_single_record("SELECT * FROM users WHERE email = '$email'");
@@ -70,11 +156,22 @@ function get_user_by_email($email)
     return $user;
 }
 
+function get_user_by_username($username)
+{
+    $user = get_single_record("SELECT * FROM users WHERE username = '$username'");
+
+    if (empty($user)) {
+        $user = false;
+    }
+
+    return $user;
+}
+
 function get_user()
 {
     global $user;
-    if (empty($user) && !empty($_SESSION['email'])) {
-        $user = get_user_by_email($_SESSION['email']);
+    if (empty($user) && !empty($_SESSION['user_email'])) {
+        $user = get_user_by_email($_SESSION['user_email']);
     }
 
     return $user;
@@ -225,4 +322,71 @@ function get_upload_path($filename) {
     }
 
     return $upload_path;
+}
+
+
+function get_user_link($user)
+{
+    return "<a href='profile.php?user={$user['username']}'>@{$user['username']}</a>";
+}
+
+
+function get_user_profile_img($user)
+{
+    if (empty($user['profile_photo'])) {
+        return 'cessna.jpg';
+    } else {
+        return $user['profile_photo'];
+    }
+}
+
+function get_user_displayname($user)
+{
+    return $user['first_name'] . ' ' . $user['last_name'];
+}
+
+
+function display_post($post, $hideActions = false)
+{
+    if (empty($post)) {
+        return;
+    }
+
+    $repost = false;
+    if ($post['parent_id']) {
+        $repost = get_post_by_id($post['parent_id']);
+    }
+    ?>
+
+    <div class="post">
+        <?php if (!empty($repost)) { ?>
+            <div class="repost">
+                <span>
+                    <?php echo get_user_displayname($post['user']); ?>
+                    reposted from <?php echo get_user_link($post['user']); ?>
+                </span>
+            </div>
+        <?php } ?>
+
+        <div class="userinfo">
+            <img class="userpostprofile" src="<?php echo get_user_profile_img($post['user']); ?>" alt="<?php echo get_user_displayname($post['user']); ?>" />
+            <span class="postmeta"><?php echo get_user_link($post['user']); ?> - <?php echo date('H:i - F jS, Y', strtotime($post['created_at'])); ?></span>
+        </div>
+        <div class="text">
+            <p><?php echo htmlspecialchars($post['content']); ?></p>
+        </div>
+        <div class="postaction">
+            <?php if (!$hideActions) { ?>
+                <div class="repostcontainer">
+                    <a class="repostbutton" href="javascript:;"> Repost</a>
+                </div>
+
+                <div class="counter">
+                    <a class="likebutton" href="javascript:;"> +1 (0)</a>
+                    <a class="dislikebutton" href="javascript:;"> -1 (0)</a>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+    <?php
 }

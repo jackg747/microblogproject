@@ -6,7 +6,7 @@ jQuery(document).ready(function ($){
     $postContent.on('keyup', function (e){
         var $this = $(this);
         var charNumber = $this.val().trim().length;
-//display how many characters
+        //display how many characters
         $characterCounter.text(charNumber);
         $charactersRemaining.text(250-charNumber);
         if (charNumber > 250){

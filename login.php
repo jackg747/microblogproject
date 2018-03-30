@@ -8,12 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = $e->getMessage();
     }
 }
+
+if (get_user()) {
+    header('Location: posts.php');
+}
 ?>
 <?php require_once("header.php"); ?>
-    <h1>
-        <img src="avgeek.png" alt="Aviation GeekS!" style="display: inline"
-            width="200" height="150" /> Login Page
-    </h1>
     <form id="login" onsubmit="return validateLogInForm()" method="post">
         <table>
             <tr class= "fieldparent">

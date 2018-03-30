@@ -1,4 +1,4 @@
-<?php session_start();
+<?php
 ini_set('error_reporting', E_ALL);
 try {
     require_once("common.php");
@@ -15,6 +15,21 @@ try {
         <link rel="stylesheet" type="text/css" href="presentation.css" />
     </head>
     <body>
+        <?php if ($user = get_user()) { ?>
+            <script src="reactions.js"></script>
+            <span style="background: black; color: white; display: block; float: right; padding: 1em">
+                Welcome <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
+            </span>
+        <?php } else { ?>
+            <header>
+                <a href="signup.php">Don't have an account? Sign-up here!</a>
+            </header>
+        <?php } ?>
+
         <?php if (@$message) { ?>
             <div style="padding: 1em; color: white; background: red;"><?php echo $message; ?></div>
         <?php } ?>
+        <h1>
+            <img src="avgeek.png" alt="Aviation GeekS!" style="display: inline"
+                width="200" height="150" /> Post Here
+        </h1>

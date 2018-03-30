@@ -1,18 +1,18 @@
 <?php require_once('common.php');
     if ($username = @$_GET['user']) {
-        $user = get_user_by_username($username);
+        $pageUser = get_user_by_username($username);
     } elseif ($user = get_user()) {
         $user = $user;
     } else {
         header('Location: login.php');
     }
 
-    $dob        = $user['date_of_birth'];
-    $name       = get_user_displayname($user);
-    $email      = $user['email'];
-    $plane      = $user['plane_owned'];
-    $username   = $user['username'];
-    $profileSrc = get_user_profile_img($user);
+    $dob        = $pageUser['date_of_birth'];
+    $name       = get_user_displayname($pageUser);
+    $email      = $pageUser['email'];
+    $plane      = $pageUser['plane_owned'];
+    $username   = $pageUser['username'];
+    $profileSrc = get_user_profile_img($pageUser);
 ?>
 <?php require_once("header.php"); ?>
     <h2>@<?php echo $username; ?>'s Page!</h2>
@@ -41,13 +41,13 @@
     <h4>Posts</h4>
 
     <?php
-        $posts = get_users_posts($user);
+        $posts = get_users_posts($pageUser);
         if (!empty($posts)) {
             foreach ($posts as $post) {
                 display_post($post);
             }
         } else {
-            echo get_user_displayname($user) . ' has not made any posts yet.';
+            echo get_user_displayname($pageUser) . ' has not made any posts yet.';
         }
     ?>
 <?php require_once("footer.php"); ?>

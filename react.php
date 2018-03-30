@@ -23,7 +23,7 @@ switch ($action) {
 
 $reaction = get_single_record("SELECT * FROM reactions WHERE user_id = {$user['id']} AND post_id = $postId");
 if ($reaction) {
-    if ($reaction['value'] === (string) $value) {
+    if ((string) $reaction['value'] === (string) $value) {
         $value = 0;
     }
 

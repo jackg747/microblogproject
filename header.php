@@ -15,11 +15,11 @@ try {
         <link rel="stylesheet" type="text/css" href="presentation.css" />
     </head>
     <body>
-        <?php if ($user = get_user()) { ?>
+        <?php if ($loggedInUser = get_user()) { ?>
             <script src="reactions.js"></script>
             <span style="background: black; color: white; display: block; float: right; padding: 1em">
-                Welcome <?php echo $user['first_name'] . ' ' . $user['last_name']; ?><br>
-                <a href="profile.php?user=<?php echo $user['username']; ?>">View profile</a>
+                Welcome <?php echo get_user_displayname($loggedInUser); ?><br>
+                <a href="profile.php?user=<?php echo $loggedInUser['username']; ?>">View profile</a>
             </span>
         <?php } else { ?>
             <header>
@@ -30,7 +30,7 @@ try {
         <?php if (@$message) { ?>
             <div style="padding: 1em; color: white; background: red;"><?php echo $message; ?></div>
         <?php } ?>
-        <h1>
+        <a href="index.php" style="display: block;">
             <img src="avgeek.png" alt="Aviation GeekS!" style="display: inline"
                 width="200" height="150" />
-        </h1>
+        </a>

@@ -2,7 +2,7 @@
     if ($username = @$_GET['user']) {
         $pageUser = get_user_by_username($username);
     } elseif ($user = get_user()) {
-        $user = $user;
+        $pageUser = $user;
     } else {
         header('Location: login.php');
     }

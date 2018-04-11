@@ -21,26 +21,30 @@ switch ($action) {
         $output = json_encode($reactionData);
         break;
     case 'getNewPosts':
-        $source = $_POST['source'];
+        try {
+            $source = $_POST['source'];
 
-        if ($source === 'index') {
-            $posts = get_all_posts(50, $postIds);
-        } elseif ($source === 'profile') {
-            $posts = get_users_posts(
-                array('id' => $_POST['userId']),
-                $postIds
-            );
-        }
-
-        if (!empty($posts)) {
-            ob_start();
-            foreach ($posts as $post) {
-                display_post($post);
+            if ($source === 'index') {
+                $posts = get_all_posts(50, $postIds);
+            } elseif ($source === 'profile') {
+                $posts = get_users_posts(
+                    array('id' => $_POST['userId']),
+                    $postIds
+                );
             }
-            $output = ob_get_clean();
-        } else {
-            http_response_code(204);
-            $output = json_encode(array('error' => true, 'message' => 'No new posts'));
+
+            if (!empty($posts)) {
+                ob_start();
+                foreach ($posts as $post) {
+                    display_post($post);
+                }
+                $output = ob_get_clean();
+            } else {
+                http_response_code(204);
+                $output = json_encode(array('error' => true, 'message' => 'No new posts'));
+            }
+        } catch (Exception $ex) {
+            $output = $ex->getMessage();
         }
 
         break;

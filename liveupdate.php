@@ -11,7 +11,7 @@ if (empty($postIds) || empty($action)) {
 
 switch ($action) {
     case 'getPostReactionCounts':
-        $reactionData = [];
+        $reactionData = array();
         foreach ($postIds as $id) {
             $reactionData[$id] = array(
                 'likes'    => get_post_reactions($id, 1),
@@ -46,7 +46,7 @@ switch ($action) {
 
 function getPostIds() {
     $postIds = $_POST['postIds'];
-    $filteredPostIds = [];
+    $filteredPostIds = array();
 
     foreach ($postIds as $id => $use) {
         if ($use) {

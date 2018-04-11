@@ -8,7 +8,6 @@ if (empty($postIds) || empty($action)) {
     die(json_encode(array('error' => true, 'message' => "What you talking about Willis?!")));
 }
 
-
 switch ($action) {
     case 'getPostReactionCounts':
         $reactionData = array();
@@ -27,7 +26,10 @@ switch ($action) {
         if ($source === 'index') {
             $posts = get_all_posts(50, $postIds);
         } elseif ($source === 'profile') {
-            $posts = get_users_posts(array('id' => $_POST['userId']), $postIds);
+            $posts = get_users_posts(
+                array('id' => $_POST['userId']),
+                $postIds
+            );
         }
 
         if (!empty($posts)) {

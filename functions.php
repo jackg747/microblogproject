@@ -136,11 +136,11 @@ function get_post_by_id($id)
 
 function get_all_posts($limit = 0, $exclude = false)
 {
-    $query = "SELECT id from posts";
+    $query = "SELECT id from posts ";
     if (!empty($exclude)) {
-        $query .= " WHERE ID NOT IN ('" . implode("', '", $exclude) . "')";
+        $query .= "WHERE ID NOT IN ('" . implode("', '", $exclude) . "') ";
     }
-    $query .= " ORDER BY created_at DESC";
+    $query .= "ORDER BY created_at DESC";
     if ($limit) {
         $query .= " LIMIT $limit";
     }

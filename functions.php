@@ -167,8 +167,6 @@ function get_users_posts($user, $exclude = '')
 
     $query = "SELECT id FROM posts where user_id = $id $exclude ORDER BY `created_at` DESC";
 
-    // die($query);
-
     $posts = array();
     $postIds = get_multiple_records($query);
 

@@ -1,6 +1,9 @@
 jQuery(document).ready(function ($){
-    setInterval(checkForNewReactions, 2000);
-    setInterval(checkForNewPosts, 2000);
+
+    if ($('.posts_container')) {
+        setInterval(checkForNewReactions, 2000);
+        setInterval(checkForNewPosts, 2000);
+    }
 });
 
 function getPostIds()

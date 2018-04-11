@@ -2,6 +2,7 @@
 
 $action = $_POST['action'];
 $postIds = getPostIds();
+$output = '';
 if (empty($postIds) || empty($action)) {
     http_response_code(204);
     die(json_encode(array(

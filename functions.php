@@ -134,15 +134,20 @@ function get_post_by_id($id)
     return $post;
 }
 
-function get_all_posts($limit = 0)
+function get_all_posts($limit = 0, $exclude = false)
 {
-    $query = "SELECT id from posts ORDER BY created_at DESC";
+    $query = "SELECT id from posts";
+    if (!empty($exclude)) {
+        $query .= " WHERE ID NOT IN ('" . implode("', '", $exclude) . "')";
+    }
+    $query .= " ORDER BY created_at DESC";
     if ($limit) {
         $query .= " LIMIT $limit";
     }
 
     $postIds = get_multiple_records($query);
 
+    $posts = array();
     if (!empty($postIds)) {
         foreach ($postIds as $id) {
             $posts[] = get_post_by_id($id['id']);
@@ -152,12 +157,20 @@ function get_all_posts($limit = 0)
     return $posts;
 }
 
-function get_users_posts($user)
+function get_users_posts($user, $exclude = '')
 {
     $id = (int) $user['id'];
 
+    if (!empty($exclude)) {
+        $exclude = " AND id NOT IN ('" . implode("', '", $exclude) . "')";
+    }
+
+    $query = "SELECT id FROM posts where user_id = $id $exclude ORDER BY `created_at` DESC";
+
+    // die($query);
+
     $posts = array();
-    $postIds = get_multiple_records("SELECT id FROM posts where user_id = $id ORDER BY `created_at` DESC");
+    $postIds = get_multiple_records($query);
 
     if (!empty($postIds)) {
         foreach ($postIds as $id) {
@@ -203,7 +216,7 @@ function get_user($force = false)
 {
     global $user;
     if ($force || (empty($user) && !empty($_SESSION['user_email']))) {
-        $user = get_user_by_email($_SESSION['user_email']);
+        $user = @get_user_by_email($_SESSION['user_email']);
     }
 
     return $user;
@@ -400,10 +413,12 @@ function display_post($post, $hideActions = false)
             </div>
         <?php } ?>
 
-        <?php display_post_content($post, $hideActions); ?>
+        <div data-post-id="<?php echo $post['id']; ?>">
+            <?php display_post_content($post, $hideActions); ?>
+        </div>
 
         <?php if (!empty($repost)) { ?>
-            <div style="margin-left:1em;margin-top:1em;background:#aaa;padding:2em;">
+            <div data-post-id="<?php echo $repost['id']; ?>" style="margin-left:1em;margin-top:1em;background:#aaa;padding:2em;">
                 <?php display_post_content($repost, $hideActions); ?>
             </div>
         <?php } ?>
@@ -439,9 +454,12 @@ function display_post_content($post, $hideActions)
 function get_reaction_class($postId, $value)
 {
     $user = get_user();
-    $reaction = get_single_record("SELECT id FROM `reactions` WHERE post_id = $postId AND user_id = {$user['id']} AND value = $value");
-    if (!empty($reaction)) {
-        echo 'clicked';
+
+    if ($user) {
+        $reaction = get_single_record("SELECT id FROM `reactions` WHERE post_id = $postId AND user_id = {$user['id']} AND value = $value");
+        if (!empty($reaction)) {
+            echo 'clicked';
+        }
     }
 }
 

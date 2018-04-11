@@ -40,14 +40,16 @@
     </div>
     <h4>Posts</h4>
 
-    <?php
-        $posts = get_users_posts($pageUser);
-        if (!empty($posts)) {
-            foreach ($posts as $post) {
-                display_post($post);
+    <div class="posts_container" data-source="profile" data-user-id="<?php echo $pageUser['id']; ?>">
+        <?php
+            $posts = get_users_posts($pageUser);
+            if (!empty($posts)) {
+                foreach ($posts as $post) {
+                    display_post($post);
+                }
+            } else {
+                echo get_user_displayname($pageUser) . ' has not made any posts yet.';
             }
-        } else {
-            echo get_user_displayname($pageUser) . ' has not made any posts yet.';
-        }
-    ?>
+        ?>
+    </div>
 <?php require_once("footer.php"); ?>

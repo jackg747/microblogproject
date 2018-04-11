@@ -8,14 +8,16 @@
     <?php } ?>
 
     <h4>Posts</h4>
-    <?php
-        $posts = get_all_posts(20);
-        if (!empty($posts)) {
-            foreach ($posts as $post) {
-                display_post($post);
+    <div class="posts_container" data-source="index">
+        <?php
+            $posts = get_all_posts(20);
+            if (!empty($posts)) {
+                foreach ($posts as $post) {
+                    display_post($post);
+                }
+            } else {
+                echo 'No posts to display';
             }
-        } else {
-            echo 'No posts to display';
-        }
-    ?>
+        ?>
+    </div>
 <?php require_once("footer.php"); ?>

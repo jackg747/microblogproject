@@ -5,7 +5,7 @@ if (!get_user()) {
 }
 
 $repost = false;
-if ($_GET['repost']) {
+if (@$_GET['repost']) {
     $repost = get_post_by_id($_GET['repost']);
 }
 

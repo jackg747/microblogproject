@@ -10,8 +10,9 @@ try {
     <head>
         <meta charset="ISO-8859-1">
         <title>AvGeeks</title>
-        <script src="validation.js"></script>
         <script src="jquery-3.3.1.min.js"></script>
+        <script src="validation.js"></script>
+        <script src="liveupdate.js"></script>
         <link rel="stylesheet" type="text/css" href="presentation.css" />
     </head>
     <body>

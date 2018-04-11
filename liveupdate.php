@@ -34,11 +34,9 @@ switch ($action) {
             }
 
             if (!empty($posts)) {
-                ob_start();
                 foreach ($posts as $post) {
                     display_post($post);
                 }
-                $output = ob_get_clean();
             } else {
                 http_response_code(204);
                 $output = json_encode(array('error' => true, 'message' => 'No new posts'));

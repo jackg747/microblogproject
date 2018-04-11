@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($){
 
-    if ($('.posts_container')) {
+    if ($('.posts_container').length) {
         setInterval(checkForNewReactions, 2000);
         setInterval(checkForNewPosts, 2000);
     }
